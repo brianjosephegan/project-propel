@@ -24,6 +24,27 @@ public class Submarine : MonoBehaviour
         RespondToRotateInput();
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Respawn":
+                {
+                    break;
+                }
+            case "Finish":
+                {
+                    print("Complete!");
+                    break;
+                }
+            default:
+                {
+                    print("Crash!");
+                    break;
+                }
+        }
+    }
+
     private void RespondToThrustInput()
     {
         if (Input.GetKey(KeyCode.Space))
