@@ -7,6 +7,8 @@ public class Submarine : MonoBehaviour
     [SerializeField] float rotationThrust = 100f;
     [SerializeField] float upwardThrust = 100f;
 
+    [SerializeField] ParticleSystem bubbleParticles;
+
     Rigidbody submarineRigidBody;
 
     // Start is called before the first frame update
@@ -28,12 +30,21 @@ public class Submarine : MonoBehaviour
         {
             ApplyThrust();
         }
+        else
+        {
+            StopApplyingThrust();
+        }
     }
 
     private void ApplyThrust()
     {
         float thrustThisFrame = upwardThrust * Time.deltaTime;
         submarineRigidBody.AddRelativeForce(Vector3.up * thrustThisFrame);
+
+        if (!bubbleParticles.isPlaying)
+        {
+            bubbleParticles.Play();
+        }
     }
 
     private void RespondToRotateInput()
@@ -46,6 +57,11 @@ public class Submarine : MonoBehaviour
         {
             RotateManually(-rotationThrust * Time.deltaTime);
         }
+    }
+
+    private void StopApplyingThrust()
+    {
+        bubbleParticles.Stop();
     }
 
     private void RotateManually(float rotationThisFrame)
