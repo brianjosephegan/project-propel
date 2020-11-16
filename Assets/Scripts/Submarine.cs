@@ -8,13 +8,16 @@ public class Submarine : MonoBehaviour
     [SerializeField] float upwardThrust = 100f;
 
     [SerializeField] ParticleSystem bubbleParticles;
+    [SerializeField] AudioClip bubbleSFX;
 
     Rigidbody submarineRigidBody;
+    AudioSource submarineAudioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         submarineRigidBody = GetComponent<Rigidbody>();
+        submarineAudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -66,6 +69,11 @@ public class Submarine : MonoBehaviour
         {
             bubbleParticles.Play();
         }
+
+        if (!submarineAudioSource.isPlaying)
+        {
+            submarineAudioSource.PlayOneShot(bubbleSFX);
+        }
     }
 
     private void RespondToRotateInput()
@@ -83,6 +91,7 @@ public class Submarine : MonoBehaviour
     private void StopApplyingThrust()
     {
         bubbleParticles.Stop();
+        submarineAudioSource.Stop();
     }
 
     private void RotateManually(float rotationThisFrame)
