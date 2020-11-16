@@ -10,8 +10,13 @@ public class Submarine : MonoBehaviour
     [SerializeField] ParticleSystem bubbleParticles;
     [SerializeField] AudioClip bubbleSFX;
 
+    [SerializeField] ParticleSystem explosionParticles;
+    [SerializeField] AudioClip explosionSFX;
+
     Rigidbody submarineRigidBody;
     AudioSource submarineAudioSource;
+
+    bool isTransitioning;
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +28,16 @@ public class Submarine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isTransitioning) { return; }
+
         RespondToThrustInput();
         RespondToRotateInput();
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        if (isTransitioning) { return; }
+
         switch (collision.gameObject.tag)
         {
             case "Respawn":
@@ -42,10 +51,19 @@ public class Submarine : MonoBehaviour
                 }
             default:
                 {
-                    print("Crash!");
+                    StartDeathSequence();
                     break;
                 }
         }
+    }
+
+    private void StartDeathSequence()
+    {
+        isTransitioning = true;
+        submarineAudioSource.Stop();
+        bubbleParticles.Stop();
+        submarineAudioSource.PlayOneShot(explosionSFX);
+        explosionParticles.Play();
     }
 
     private void RespondToThrustInput()
