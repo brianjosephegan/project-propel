@@ -13,6 +13,9 @@ public class Submarine : MonoBehaviour
     [SerializeField] ParticleSystem explosionParticles;
     [SerializeField] AudioClip explosionSFX;
 
+    [SerializeField] ParticleSystem successParticles;
+    [SerializeField] AudioClip successSFX;
+
     Rigidbody submarineRigidBody;
     AudioSource submarineAudioSource;
 
@@ -46,7 +49,7 @@ public class Submarine : MonoBehaviour
                 }
             case "Finish":
                 {
-                    print("Complete!");
+                    StartSuccessSequence();
                     break;
                 }
             default:
@@ -57,6 +60,16 @@ public class Submarine : MonoBehaviour
         }
     }
 
+    private void StartSuccessSequence()
+    {
+        isTransitioning = true;
+        submarineAudioSource.Stop();
+        bubbleParticles.Stop();
+        submarineAudioSource.PlayOneShot(successSFX);
+        successParticles.Play();
+        FindObjectOfType<SceneLoader>().Invoke("LoadFirstScene", 1f);
+    }
+
     private void StartDeathSequence()
     {
         isTransitioning = true;
@@ -64,6 +77,7 @@ public class Submarine : MonoBehaviour
         bubbleParticles.Stop();
         submarineAudioSource.PlayOneShot(explosionSFX);
         explosionParticles.Play();
+        FindObjectOfType<SceneLoader>().Invoke("LoadFirstScene", 1f);
     }
 
     private void RespondToThrustInput()
