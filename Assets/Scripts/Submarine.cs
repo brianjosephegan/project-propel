@@ -67,7 +67,7 @@ public class Submarine : MonoBehaviour
         bubbleParticles.Stop();
         submarineAudioSource.PlayOneShot(successSFX);
         successParticles.Play();
-        FindObjectOfType<SceneLoader>().Invoke("LoadFirstScene", 1f);
+        FindObjectOfType<SceneLoader>().Invoke("LoadNextScene", 1f);
     }
 
     private void StartDeathSequence()
@@ -77,7 +77,7 @@ public class Submarine : MonoBehaviour
         bubbleParticles.Stop();
         submarineAudioSource.PlayOneShot(explosionSFX);
         explosionParticles.Play();
-        FindObjectOfType<SceneLoader>().Invoke("LoadFirstScene", 1f);
+        FindObjectOfType<SceneLoader>().Invoke("LoadCurrentScene", 1f);
     }
 
     private void RespondToThrustInput()
